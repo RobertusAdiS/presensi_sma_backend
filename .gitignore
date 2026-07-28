@@ -1,0 +1,13 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment / Secret Credentials
+.env
+.env.local
+
+# Logs and Sessions
+*.log
+logs/
+sessions/
