@@ -14,16 +14,38 @@ if (!$student) {
     jsonResponse('error', null, 'Sesi siswa tidak aktif. Silakan login terlebih dahulu.', 401);
 }
 
-$jadwal_id = intval($input['jadwal_id'] ?? 0);
-$tanggal = sanitize($input['tanggal'] ?? date('Y-m-d'));
-$status = sanitize($input['status'] ?? 'Hadir');
-$keterangan = sanitize($input['keterangan'] ?? 'Presensi Mandiri via QR Scan');
+// Check for token from QR Code
+$token = sanitize($input['token'] ?? '');
 
-if ($jadwal_id <= 0 || empty($tanggal)) {
-    jsonResponse('error', null, 'Parameter QR Code tidak valid', 400);
+if (empty($token)) {
+    jsonResponse('error', null, 'Token QR Code tidak valid', 400);
 }
 
 try {
+    // Verify token from qr_sessions table
+    $stmt_qr = $conn->prepare("SELECT jadwal_id, tanggal, expires_at FROM qr_sessions WHERE token = ?");
+    $stmt_qr->bind_param("s", $token);
+    $stmt_qr->execute();
+    $qr_res = $stmt_qr->get_result();
+
+    if ($qr_res->num_rows === 0) {
+        jsonResponse('error', null, 'QR Code tidak dikenali atau tidak valid.', 404);
+    }
+
+    $qr_session = $qr_res->fetch_assoc();
+    $jadwal_id = $qr_session['jadwal_id'];
+    $tanggal = $qr_session['tanggal'];
+    $expires_at = $qr_session['expires_at'];
+
+    // Check expiration
+    if (strtotime($expires_at) < time()) {
+        jsonResponse('error', null, 'Waktu presensi untuk QR Code ini telah habis (Kedaluwarsa).', 403);
+    }
+
+    $status = 'Hadir'; // Default from QR Scan
+    $keterangan = 'Presensi Mandiri via QR Scan';
+
+    // Verify Schedule
     $stmt_j = $conn->prepare("SELECT j.*, m.nama_mapel, k.nama_kelas FROM jadwal_pelajaran j JOIN mata_pelajaran m ON j.mata_pelajaran_id = m.id JOIN kelas k ON j.kelas_id = k.id WHERE j.id = ?");
     $stmt_j->bind_param("i", $jadwal_id);
     $stmt_j->execute();
