@@ -34,12 +34,14 @@ try {
 
     if ($result->num_rows > 0) {
         $siswa = $result->fetch_assoc();
+        $_SESSION['auth_type'] = 'student';
         $_SESSION['student'] = [
             'id' => $siswa['id'],
             'nama_lengkap' => $siswa['nama_lengkap'],
             'nisn' => $siswa['nisn'],
             'kelas_id' => $siswa['kelas_id']
         ];
+        unset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['nama_lengkap'], $_SESSION['role']);
 
         jsonResponse('success', [
             'student' => $siswa
