@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../config/database_native.php';
 require_once __DIR__ . '/../../app/middleware.php';
-require_once __DIR__ . '/../../app/helpers.php';
+require_once __DIR__ . '/../../app/helpers_native.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
