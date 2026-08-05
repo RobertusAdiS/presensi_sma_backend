@@ -27,7 +27,7 @@ try {
         }
     }
     else if ($method === 'POST') {
-        requireApiAdmin();
+        requirePermission('mapel.create');
         $nama_mapel = sanitize($input['nama_mapel'] ?? '');
         $kode_mapel = sanitize($input['kode_mapel'] ?? '');
         $guru_id = intval($input['guru_id'] ?? 0);
@@ -45,7 +45,7 @@ try {
         }
     }
     else if ($method === 'PUT') {
-        requireApiAdmin();
+        requirePermission('mapel.edit');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         $nama_mapel = sanitize($input['nama_mapel'] ?? '');
         $kode_mapel = sanitize($input['kode_mapel'] ?? '');
@@ -64,7 +64,7 @@ try {
         }
     }
     else if ($method === 'DELETE') {
-        requireApiAdmin();
+        requirePermission('mapel.delete');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         if ($id <= 0) jsonResponse('error', null, 'ID Mapel wajib diisi', 400);
 

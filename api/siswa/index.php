@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../app/middleware.php';
+require_once __DIR__ . '/../../app/permissions.php';
 require_once __DIR__ . '/../../app/helpers.php';
 
 requireApiLogin();
@@ -38,8 +39,8 @@ try {
     }
 
     // POST: Create New Siswa
-    else if ($method === 'POST') {
-        requireApiAdmin();
+     else if ($method === 'POST') {
+         requirePermission('siswa.create');
         $nisn = sanitize($input['nisn'] ?? '');
         $nama = sanitize($input['nama_lengkap'] ?? '');
         $jenis_kelamin = sanitize($input['jenis_kelamin'] ?? '');
@@ -63,8 +64,8 @@ try {
     }
 
     // PUT: Update Siswa
-    else if ($method === 'PUT') {
-        requireApiAdmin();
+     else if ($method === 'PUT') {
+         requirePermission('siswa.edit');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         $nisn = sanitize($input['nisn'] ?? '');
         $nama = sanitize($input['nama_lengkap'] ?? '');
@@ -89,8 +90,8 @@ try {
     }
 
     // DELETE: Deactivate/Delete Siswa
-    else if ($method === 'DELETE') {
-        requireApiAdmin();
+     else if ($method === 'DELETE') {
+         requirePermission('siswa.delete');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         if ($id <= 0) {
             jsonResponse('error', null, 'ID Siswa wajib diisi', 400);

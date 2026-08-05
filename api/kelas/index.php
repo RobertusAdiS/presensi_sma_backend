@@ -27,7 +27,7 @@ try {
         }
     }
     else if ($method === 'POST') {
-        requireApiAdmin();
+        requirePermission('kelas.create');
         $nama_kelas = sanitize($input['nama_kelas'] ?? '');
         $tingkat = sanitize($input['tingkat'] ?? '');
         $jurusan = sanitize($input['jurusan'] ?? '');
@@ -46,7 +46,7 @@ try {
         }
     }
     else if ($method === 'PUT') {
-        requireApiAdmin();
+        requirePermission('kelas.edit');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         $nama_kelas = sanitize($input['nama_kelas'] ?? '');
         $tingkat = sanitize($input['tingkat'] ?? '');
@@ -66,7 +66,7 @@ try {
         }
     }
     else if ($method === 'DELETE') {
-        requireApiAdmin();
+        requirePermission('kelas.delete');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         if ($id <= 0) jsonResponse('error', null, 'ID Kelas wajib diisi', 400);
 

@@ -33,7 +33,7 @@ try {
         }
     }
     else if ($method === 'POST') {
-        requireApiAdmin();
+        requirePermission('jadwal.create');
         $kelas_id = intval($input['kelas_id'] ?? 0);
         $mata_pelajaran_id = intval($input['mata_pelajaran_id'] ?? 0);
         $guru_id = intval($input['guru_id'] ?? 0);
@@ -54,7 +54,7 @@ try {
         }
     }
     else if ($method === 'PUT') {
-        requireApiAdmin();
+        requirePermission('jadwal.edit');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         $kelas_id = intval($input['kelas_id'] ?? 0);
         $mata_pelajaran_id = intval($input['mata_pelajaran_id'] ?? 0);
@@ -76,7 +76,7 @@ try {
         }
     }
     else if ($method === 'DELETE') {
-        requireApiAdmin();
+        requirePermission('jadwal.delete');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         if ($id <= 0) jsonResponse('error', null, 'ID Jadwal wajib diisi', 400);
 

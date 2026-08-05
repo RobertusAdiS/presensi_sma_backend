@@ -31,9 +31,9 @@ try {
         }
     }
 
-    // POST: Create Guru
-    else if ($method === 'POST') {
-        requireApiAdmin();
+// POST: Create Guru
+ else if ($method === 'POST') {
+     requirePermission('guru.create');
         $nip = sanitize($input['nip'] ?? '');
         $nama_lengkap = sanitize($input['nama_lengkap'] ?? '');
         $username = sanitize($input['username'] ?? '');
@@ -69,9 +69,9 @@ try {
         }
     }
 
-    // PUT: Update Guru
-    else if ($method === 'PUT') {
-        requireApiAdmin();
+// PUT: Update Guru
+ else if ($method === 'PUT') {
+     requirePermission('guru.edit');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         $nip = sanitize($input['nip'] ?? '');
         $nama_lengkap = sanitize($input['nama_lengkap'] ?? '');
@@ -111,9 +111,9 @@ try {
         }
     }
 
-    // DELETE: Remove Guru
-    else if ($method === 'DELETE') {
-        requireApiAdmin();
+// DELETE: Remove Guru
+ else if ($method === 'DELETE') {
+     requirePermission('guru.delete');
         $id = intval($input['id'] ?? $_GET['id'] ?? 0);
         if ($id <= 0) {
             jsonResponse('error', null, 'ID Guru wajib diisi', 400);

@@ -4,6 +4,7 @@
  */
 
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/permissions.php';
 require_once __DIR__ . '/helpers.php';
 
 /**
@@ -22,6 +23,31 @@ function requireApiAdmin() {
     requireApiLogin();
     if (!hasRole('admin')) {
         jsonResponse('error', null, 'Akses ditolak. Anda bukan Admin.', 403);
+    }
+}
+
+/**
+ * Include permissions functions
+ */
+require_once __DIR__ . '/permissions.php';
+
+/**
+ * Middleware to require specific permission
+ */
+function requireApiPermission($permission) {
+    requireApiLogin();
+    if (!hasPermission($permission)) {
+        jsonResponse('error', null, 'Akses ditolak. Tidak memiliki izin: ' . $permission, 403);
+    }
+}
+
+/**
+ * Middleware to require any of the permissions
+ */
+function requireApiAnyPermission($permissions) {
+    requireApiLogin();
+    if (!hasAnyPermission($permissions)) {
+        jsonResponse('error', null, 'Akses ditolak. Tidak memiliki izin yang diperlukan.', 403);
     }
 }
 
