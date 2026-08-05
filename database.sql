@@ -130,3 +130,6 @@ VALUES (2, 'guru', '$2y$10$wR9KPcPCXCgMzoq/Brc71u5mPhbvKXE8flGQpT88dl/qqnZ4qRAmG
 
 INSERT INTO guru (user_id, nip, no_telp, alamat) 
 VALUES (2, '198701012010121001', '081234567890', 'Jl. Pendidikan No. 123');
+
+INSERT INTO siswa (id, nisn, nama_lengkap, kelas_id, no_telp, alamat, is_active)
+VALUES (1, '198701012010121001', 'Budi Santoso', 1, '081234567890', 'Jl. Pendidikan No. 123', 1);
