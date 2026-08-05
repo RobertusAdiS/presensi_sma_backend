@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../config/database_native.php';
 require_once __DIR__ . '/../../app/middleware.php';
 require_once __DIR__ . '/../../app/permissions.php';
-require_once __DIR__ . '/../../app/helpers.php';
+require_once __DIR__ . '/../../app/helpers_native.php';
 
 requireApiLogin();
 

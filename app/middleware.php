@@ -5,7 +5,7 @@
 
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/permissions.php';
-require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/helpers_native.php';
 
 /**
  * Enforce Login for API
@@ -25,11 +25,6 @@ function requireApiAdmin() {
         jsonResponse('error', null, 'Akses ditolak. Anda bukan Admin.', 403);
     }
 }
-
-/**
- * Include permissions functions
- */
-require_once __DIR__ . '/permissions.php';
 
 /**
  * Middleware to require specific permission
