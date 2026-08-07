@@ -29,10 +29,12 @@ try {
     }
     
     $stmt_history = $conn->prepare("
-        SELECT a.*, m.nama_mapel, g.nama_lengkap as nama_guru
+        SELECT a.*, m.nama_mapel, u.nama_lengkap as nama_guru
         FROM absensi a
-        LEFT JOIN mata_pelajaran m ON a.mata_pelajaran_id = m.id
-        LEFT JOIN guru g ON a.guru_id = g.id
+        LEFT JOIN jadwal_pelajaran jp ON a.jadwal_id = jp.id
+        LEFT JOIN mata_pelajaran m ON jp.mata_pelajaran_id = m.id
+        LEFT JOIN guru g ON jp.guru_id = g.id
+        LEFT JOIN users u ON g.user_id = u.id
         WHERE a.siswa_id = ?
         ORDER BY a.tanggal DESC
         LIMIT 10
