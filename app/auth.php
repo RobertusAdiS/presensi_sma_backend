@@ -66,6 +66,13 @@ function hasRole($role) {
 }
 
 /**
+ * Get current user's role
+ */
+function getCurrentRole() {
+    return $_SESSION['role'] ?? null;
+}
+
+/**
  * Logout user
  */
 function logout() {
