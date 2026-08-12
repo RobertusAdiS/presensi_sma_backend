@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +46,22 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Public scan endpoint
 Route::post('absensi/scan', [\App\Http\Controllers\API\QRController::class, 'scan']);
+
+//health check
+Route::get('/health', function () {
+    try {
+        // Memastikan Laravel benar-benar bisa terkoneksi ke database
+        DB::connection()->getPdo();
+
+        return response()->json([
+            'status' => 'ok',
+            'database' => 'connected',
+        ], 200);
+    } catch (\Exception $e) {
+        // Jika DB mati/gagal konek, kembalikan HTTP Status 500
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Database connection failed',
+        ], 500);
+    }
+});
