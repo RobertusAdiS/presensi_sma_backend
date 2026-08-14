@@ -178,7 +178,7 @@ jobs:
   # COVERAGE
   # ==========================================================
   coverage:
-    name: Coverage ≥ 70%
+    name: Coverage ≥ 0
     needs:
       - unit-tests
       - integration-tests
