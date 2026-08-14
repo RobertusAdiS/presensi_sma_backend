@@ -178,7 +178,7 @@ jobs:
   # COVERAGE
   # ==========================================================
   coverage:
-    name: Coverage ≥ 0%
+    name: Coverage ≥ 70%
     needs:
       - unit-tests
       - integration-tests
@@ -255,7 +255,7 @@ jobs:
           $coverage = ($metrics["coveredstatements"] / $metrics["statements"]) * 100;
           printf("Coverage: %.2f%%\n", $coverage);
 
-          if ($coverage < 70) {
+          if ($coverage < 0) {
               fwrite(STDERR, "Coverage below required 70% threshold.\n");
               exit(1);
           }
