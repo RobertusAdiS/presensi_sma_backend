@@ -13,6 +13,6 @@ parameters:
     # Disarankan mulai dari level 5 untuk proyek Laravel.
     level: 5
 
-ignoreErrors:
-    - '#Access to an undefined property App\\Http\\Resources\\[a-zA-Z0-9]+ Resource::\$#'
-    - '#Call to an undefined method App\\Http\\Resources\\[a-zA-Z0-9]+ Resource::#'
+    ignoreErrors:
+        - '#Access to an undefined property App\\Http\\Resources\\[a-zA-Z0-9]+ Resource::\$#'
+        - '#Call to an undefined method App\\Http\\Resources\\[a-zA-Z0-9]+ Resource::#'
