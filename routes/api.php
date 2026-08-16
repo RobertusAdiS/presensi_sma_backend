@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\TeacherController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\SchoolClassController;
 use App\Http\Controllers\Api\MapelController;
+use Illuminate\Support\Facades\DB;
 
 Route::post('/login', [AuthController::class, 'login']);
 
