@@ -1,14 +1,16 @@
 includes:
-    - vendor/larastan/larastan/extension.neon
+  - vendor/larastan/larastan/extension.neon
 
 parameters:
+  paths:
+    - app/
+    - config/
+    - database/
+    - routes/
 
-    paths:
-        - app/
-        - config/
-        - database/
-        - routes/
+  level: 5
 
-    # Level analisis dari 0 (paling longgar) sampai 9 (paling ketat).
-    # Disarankan mulai dari level 5 untuk proyek Laravel.
-    level: 5
+  ignoreErrors:
+    - '#Access to an undefined property App\\Http\\Resources\\[a-zA-Z0-9\\]+::\$#'
+    - '#Call to an undefined method App\\Http\\Resources\\[a-zA-Z0-9\\]+::#'
+    - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$is_active#'

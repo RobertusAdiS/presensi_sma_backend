@@ -66,8 +66,8 @@ Route::get('/health', function () {
     } catch (\Exception $e) {
         // Jika DB mati/gagal konek, kembalikan HTTP Status 500
         return response()->json([
-            'status' => 'error',
-            'message' => 'Database connection failed',
-        ], 500);
+        'status' => 'error',
+        'message' => $e->getMessage(),
+    ], 500);
     }
 });
