@@ -21,6 +21,10 @@ Route::post('/teachers', [TeacherController::class, 'store']);
 Route::get('/teachers/{teacher}', [TeacherController::class, 'show']);
 Route::put('/teachers/{teacher}', [TeacherController::class, 'update']);
 
+Route::get('/teachers/{teacher}/mapels',[TeacherController::class, 'mapels']);
+Route::post('/teachers/{teacher}/mapels',[TeacherController::class, 'assignMapel']);
+Route::delete('/teachers/{teacher}/mapels/{mapel}',[TeacherController::class, 'removeMapel']);
+
 Route::get('/classes', [SchoolClassController::class, 'index']);
 Route::post('/classes', [SchoolClassController::class, 'store']);
 Route::get('/classes/{schoolClass}', [SchoolClassController::class, 'show']);
