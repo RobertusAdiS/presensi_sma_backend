@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\TeacherController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\SchoolClassController;
 use App\Http\Controllers\Api\MapelController;
+use App\Http\Controllers\Api\RoomController;
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -42,10 +43,17 @@ Route::get('/mapels/{mapel}', [MapelController::class, 'show']);
 Route::put('/mapels/{mapel}', [MapelController::class, 'update']);
 Route::delete('/mapels/{mapel}', [MapelController::class, 'destroy']);
 
+Route::get('/rooms', [RoomController::class, 'index']);
+Route::post('/rooms', [RoomController::class, 'store']);
+Route::get('/rooms/{room}', [RoomController::class, 'show']);
+Route::put('/rooms/{room}', [RoomController::class, 'update']);
+
 Route::patch('/teachers/{teacher}/deactivate', [TeacherController::class, 'deactivate']);
 Route::patch('/teachers/{teacher}/activate', [TeacherController::class, 'activate']);
 Route::patch('/classes/{schoolClass}/deactivate', [SchoolClassController::class, 'deactivate']);
 Route::patch('/classes/{schoolClass}/activate', [SchoolClassController::class, 'activate']);
+Route::patch('/rooms/{room}/deactivate', [RoomController::class, 'deactivate']);
+Route::patch('/rooms/{room}/activate', [RoomController::class, 'activate']);
 
 });
 
