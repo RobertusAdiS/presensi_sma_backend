@@ -22,6 +22,7 @@ class SchoolClassResource extends JsonResource
                 return [
                     'id' => $this->waliKelas->id,
                     'nip' => $this->waliKelas->nip,
+                    'name' => $this->waliKelas->user->name,
                     'user' => $this->whenLoaded('waliKelas.user', function () {
                         return [
                             'id' => $this->waliKelas->user->id,

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Teacher;
 
 class Mapel extends Model
 {
@@ -17,6 +18,14 @@ class Mapel extends Model
         return [
             'is_active' => 'boolean',
         ];
+    }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(
+            Teacher::class,
+            'teacher_mapel'
+        );
     }
 
 }

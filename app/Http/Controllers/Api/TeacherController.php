@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeacherResource;
+use App\Http\Resources\MapelResource;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
+use App\Http\Requests\AssignTeacherMapelRequest;
 use App\Models\Teacher;
 use App\Models\User;
+use App\Models\Mapel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -99,6 +102,37 @@ class TeacherController extends Controller
         return new TeacherResource(
             $teacher->load('user')
         );
+    }
+
+    public function assignMapel(AssignTeacherMapelRequest $request, Teacher $teacher)
+    {
+        $teacher->mapels()->attach($request->mapel_id);
+
+        return response()->json([
+            'message' => 'Mapel Berhasil Ditambahkan ke guru',
+        ]);
+        
+    }
+
+    public function mapels(Teacher $teacher)
+    {
+        $mapels = $teacher->mapels()->get();
+        return MapelResource::collection($mapels);
+    }
+
+    public function removeMapel(Teacher $teacher, Mapel $mapel)
+    {
+        $deleted = $teacher->mapels()->detach($mapel->id);
+
+         if ($deleted === 0) {
+        return response()->json([
+            'message' => 'Mapel tersebut tidak ditugaskan kepada guru ini.',
+        ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Mapel berhasil dihapus dari guru.',
+        ]);
     }
 }
 
