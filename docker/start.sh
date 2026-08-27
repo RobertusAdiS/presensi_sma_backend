@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 set -e
 
-# Ambil port dari variabel Railway, fallback ke 8080
+# Ambil PORT dari Railway, fallback ke 8080 jika lokal
 APP_PORT="${PORT:-8080}"
 
-# Ganti port pada file konfig Nginx
-sed -i "s/listen 8080;/listen ${APP_PORT};/g" /etc/nginx/sites-available/default
+# Substitusi port Nginx secara dinamis
+sed -i "s/__PORT__/${APP_PORT}/g" /etc/nginx/sites-available/default
 
-# Jalankan supervisor
-exec /usr/bin/supervisord -c /etc/supervisord.conf
+# Cache Laravel
+php artisan config:cache
+php artisan route:cache
+
+# Jalankan Supervisor
+exec /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf
