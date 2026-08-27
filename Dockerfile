@@ -1,9 +1,8 @@
 # syntax=docker/dockerfile:1
 
 # ============================================================
-# Composer dependency stage
+# Stage 1: Composer dependencies
 # ============================================================
-
 FROM composer:2 AS vendor
 
 WORKDIR /app
@@ -15,22 +14,17 @@ RUN composer install \
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader \
-    --no-progress
-
+    --no-progress \
+    --ignore-platform-reqs
 
 # ============================================================
-# Production PHP + Nginx
+# Stage 2: Production PHP + Nginx Environment
 # ============================================================
-
 FROM php:8.2-fpm-bookworm
 
 WORKDIR /var/www/html
 
-
-# ============================================================
-# System dependencies
-# ============================================================
-
+# Install system dependencies & PHP extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
         nginx \
         supervisor \
@@ -56,79 +50,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy konfigurasi PHP, Nginx, dan Supervisor
+COPY docker/php.ini /usr/local/etc/php/conf.d/production.ini
+COPY docker/nginx.conf /etc/nginx/sites-available/default
+COPY docker/supervisord.conf /etc/supervisord.conf
 
-# ============================================================
-# PHP configuration
-# ============================================================
-
-COPY docker/php.ini \
-    /usr/local/etc/php/conf.d/production.ini
-
-
-# ============================================================
-# Nginx
-# ============================================================
-
-COPY docker/nginx.conf \
-    /etc/nginx/sites-available/default
-
-
-# ============================================================
-# Supervisor
-# ============================================================
-
-COPY docker/supervisord.conf \
-    /etc/supervisor/conf.d/supervisord.conf
-
-
-# ============================================================
-# Composer dependencies
-# ============================================================
-
+# Copy vendor dari Stage 1 dan sisa source code
 COPY --from=vendor /app/vendor ./vendor
-
-
-# ============================================================
-# Laravel source
-# ============================================================
-
 COPY . .
 
+# Set permission folder storage & cache Laravel
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# ============================================================
-# Laravel permissions
-# ============================================================
-
-RUN mkdir -p \
-        storage/framework/cache \
-        storage/framework/sessions \
-        storage/framework/views \
-        storage/logs \
-        bootstrap/cache \
-    && chown -R www-data:www-data \
-        storage \
-        bootstrap/cache
-
-
-# ============================================================
-# Laravel package discovery
-# ============================================================
-
+# Run Laravel package discovery
 RUN php artisan package:discover --ansi
 
-
-# ============================================================
-# Railway provides PORT dynamically.
-#
-# 8080 is only the container's default exposed port.
-# The application must ultimately listen on $PORT.
-# ============================================================
-
 EXPOSE 8080
-
-
-# ============================================================
-# Container startup
-# ============================================================
 
 ENTRYPOINT ["/var/www/html/docker/start.sh"]
