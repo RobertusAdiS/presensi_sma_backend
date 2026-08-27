@@ -1,53 +1,11 @@
 #!/usr/bin/env bash
-
 set -e
 
-# ============================================================
-# Railway PORT
-# ============================================================
-
+# Ambil port dari variabel Railway, fallback ke 8080
 APP_PORT="${PORT:-8080}"
 
-echo "Starting Laravel application..."
-echo "PORT=${APP_PORT}"
+# Ganti port pada file konfig Nginx
+sed -i "s/listen 8080;/listen ${APP_PORT};/g" /etc/nginx/sites-available/default
 
-
-# ============================================================
-# Configure Nginx dynamically
-# ============================================================
-
-sed -i \
-    "s/__PORT__/${APP_PORT}/g" \
-    /etc/nginx/sites-available/default
-
-
-# ============================================================
-# Laravel permissions
-# ============================================================
-
-chown -R www-data:www-data \
-    /var/www/html/storage \
-    /var/www/html/bootstrap/cache
-
-
-# ============================================================
-# Cache configuration
-#
-# Migration is NOT executed here.
-# Migration runs through Railway preDeployCommand.
-# ============================================================
-
-php artisan config:cache
-
-php artisan route:cache
-
-php artisan view:cache
-
-
-# ============================================================
-# Start Supervisor
-# ============================================================
-
-exec /usr/bin/supervisord \
-    -n \
-    -c /etc/supervisor/conf.d/supervisord.conf
+# Jalankan supervisor
+exec /usr/bin/supervisord -c /etc/supervisord.conf
