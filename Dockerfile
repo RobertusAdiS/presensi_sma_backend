@@ -67,6 +67,9 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # Run Laravel package discovery
 RUN php artisan package:discover --ansi
 
+# Berikan izin eksekusi pada script start.sh
+RUN chmod +x /var/www/html/docker/start.sh
+
 EXPOSE 8080
 
 ENTRYPOINT ["/var/www/html/docker/start.sh"]
